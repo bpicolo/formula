@@ -5,6 +5,7 @@ use std::string::String;
 
 
 pub struct Integer;
+pub struct Float;
 pub struct Range {
     min: Option<int>,
     max: Option<int>
@@ -14,6 +15,7 @@ pub struct Length {
     max: Option<uint>
 }
 
+
 pub trait Validator {
     fn validate(&self, s: &String) -> bool;
 }
@@ -22,6 +24,14 @@ pub trait Validator {
 impl Validator for Integer {
     fn validate(&self, s: &String) -> bool {
         let val: Option<int> = from_str(s.as_slice());
+        return val.is_some();
+    }
+}
+
+
+impl Validator for Float {
+    fn validate(&self, s: &String) -> bool {
+        let val = from_str::<f64>(s.as_slice());
         return val.is_some();
     }
 }
@@ -52,9 +62,27 @@ fn test_validate_integer() {
     assert!(v.validate(&String::from_str("1")));
     assert!(v.validate(&String::from_str("-1")));
     assert!(v.validate(&String::from_str("4294967295")));
+    assert!(!v.validate(&String::from_str("1.0")));
+    assert!(!v.validate(&String::from_str("1.4")));
     assert!(!v.validate(&String::from_str("Seven")));
     assert!(!v.validate(&String::from_str("")));
 }
+
+
+
+#[test]
+fn test_validate_float() {
+    let v = Float;
+    assert!(v.validate(&String::from_str("0")));
+    assert!(v.validate(&String::from_str("1")));
+    assert!(v.validate(&String::from_str("-1")));
+    assert!(v.validate(&String::from_str("1.0")));
+    assert!(v.validate(&String::from_str("1.4")));
+    assert!(v.validate(&String::from_str("4294967295")));
+    assert!(!v.validate(&String::from_str("Seven")));
+    assert!(!v.validate(&String::from_str("")));
+}
+
 
 #[test]
 fn test_validate_range() {
@@ -81,6 +109,7 @@ fn test_validate_range() {
     assert!(v.validate(&String::from_str("4294967295")));
 }
 
+
 #[test]
 fn test_validate_length() {
     let v = Length{min: None, max: None};
@@ -95,5 +124,5 @@ fn test_validate_length() {
     let v = Length{min: None, max: Some(3)};
     assert!(v.validate(&String::from_str("333")));
     assert!(v.validate(&String::from_str("22")));
-    assert!(!v.validate(&String::from_str("4444")));
+    assert!(!v.validate(&String::from_str("But I love you ;_;")));
 }
