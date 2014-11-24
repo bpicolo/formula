@@ -1,0 +1,5 @@
+[package]
+
+name = "formula"
+version = "0.0.1"
+authors = ["Ben Picolo <be.picolo@gmail.com>"]
