@@ -1,11 +1,10 @@
 use std::fmt;
-use std::io::MemWriter;
 
 pub trait Html {
     fn tag(&self) -> String;
     fn closing_tag(&self) -> bool;
     fn attrs(&self) -> String;
-    fn render(&self) -> String;
+    fn render(&self) -> StringX;
 }
 
 
