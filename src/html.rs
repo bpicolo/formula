@@ -4,7 +4,7 @@ pub trait Html {
     fn tag(&self) -> String;
     fn closing_tag(&self) -> bool;
     fn attrs(&self) -> String;
-    fn render(&self) -> StringX;
+    fn render(&self) -> String;
 }
 
 
