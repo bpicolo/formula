@@ -1,41 +1,67 @@
+use std::collections::HashMap;
+
 use field::Field;
+use html::{Html, render_html};
 
 pub struct Input<'a> {
-    field: Field<'a>,
-    classes: Option<Vec<String>>,
-    typ: String,
-}
-
-fn quoted(s: String) -> String {
-    return String::from_str("\"") + s + String::from_str("\"");
+    pub attributes: HashMap<String, String>,
+    pub field: Field<'a>,
 }
 
 impl<'a> Input<'a> {
-
-    pub fn render(&self) -> String {
-        let mut v: Vec<String> = Vec::new();
-        v.push(String::from_str("<input type="));
-        v.push(quoted(self.typ.clone()));
-        v.push(String::from_str("></input>"));
-        v.connect(" ")
+    fn new() -> Input<'a> {
+        Input{attributes: HashMap::new(), field: Field::new()}
     }
 
+    pub fn with_field(f: Field<'a>) -> Input<'a> {
+        Input{attributes: HashMap::new(), field: f}
+    }
 }
+
+
+impl<'a> Html for Input<'a> {
+
+    fn tag(&self) -> String {
+        return String::from_str("input");
+    }
+
+    fn closing_tag(&self) -> bool {true}
+
+    fn attrs(&self) -> String {
+        let mut a = vec!();
+        for (key, val) in self.attributes.iter() {
+            a.push(
+                key.clone() + String::from_str("=\"") + val.clone() + String::from_str("\"")
+            );
+        }
+        a.connect(" ")
+    }
+
+    fn render(&self) -> String {
+        render_html(self)
+    }
+}
+
 
 #[cfg(test)]
 mod test {
-    use validator::{Validator, Integer, Range};
-    use super::Input;
     use field::Field;
+    use html::{Html, render_html};
+    use std::collections::HashMap;
+    use super::Input;
+    use validator::{Validator, Integer, Range};
+
     #[test]
-    fn test_stuff() {
-        let field = Field {
-            value: None,
-            validators: vec!(box Integer as Box<Validator>, box Range{min: Some(7), max: Some(500)}),
-            required: false,
-        };
-        let input = Input{field:field, classes: None, typ: String::from_str("hidden")};
-        println!("{}", input.render());
+    fn test_empty_field() {
+        let mut input = Input{field: Field::new(), attributes: HashMap::new()};
+        input.attributes.insert(
+            String::from_str("class"),
+            String::from_str("some-classes and some-more-classes"),
+        );
+        input.attributes.insert(
+            String::from_str("data-id"),
+            String::from_str("123"),
+        );
     }
 
 }

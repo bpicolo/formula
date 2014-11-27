@@ -11,6 +11,18 @@ pub struct Field<'a> {
 
 impl<'a> Field<'a> {
 
+    pub fn new() -> Field<'a> {
+        Field{value: None, validators: vec!(), required: false}
+    }
+
+    pub fn with_validators(v: Vec<Box<Validator + 'a>>,) -> Field<'a> {
+        Field{value: None, validators: v, required: false}
+    }
+
+    pub fn set(&mut self, s: String) {
+        self.value = Some(s)
+    }
+
     pub fn validate(&self) -> bool {
         return self.matches_require() && self.matches_validators();
     }
@@ -24,6 +36,7 @@ impl<'a> Field<'a> {
             self.value.as_ref().unwrap()
         ));
     }
+
 }
 
 

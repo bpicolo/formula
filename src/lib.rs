@@ -1,5 +1,7 @@
 #![crate_name = "formula"]
 
-pub mod validator;
 pub mod field;
+pub mod form;
+pub mod html;
 pub mod input;
+pub mod validator;
