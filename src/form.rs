@@ -65,23 +65,23 @@ mod test {
         ));
 
         // Test some valid things
-        f.inputs.get_mut(&"name").field.set(
+        f.inputs.get_mut(&"name").unwrap().field.set(
             String::from_str("John")
         );
-        f.inputs.get_mut(&"quantity").field.set(
+        f.inputs.get_mut(&"quantity").unwrap().field.set(
             String::from_str("10")
         );
         assert!(f.validate());
 
-        f.inputs.get_mut(&"quantity").field.set(
+        f.inputs.get_mut(&"quantity").unwrap().field.set(
             String::from_str("40")
         );
         assert!(!f.validate());
 
-        f.inputs.get_mut(&"quantity").field.set(
+        f.inputs.get_mut(&"quantity").unwrap().field.set(
             String::from_str("10")
         );
-        f.inputs.get_mut(&"name").field.set(
+        f.inputs.get_mut(&"name").unwrap().field.set(
             String::from_str("My Name is Super Looong")
         );
         assert!(!f.validate());
