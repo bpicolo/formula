@@ -1,7 +1,10 @@
 #![crate_name = "formula"]
 
-pub mod field;
+#![feature(macro_rules)]
+
+extern crate core;
+
 pub mod form;
 pub mod html;
 pub mod input;
-pub mod validator;
+pub mod validate;

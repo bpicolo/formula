@@ -1,6 +1,4 @@
-use validator::{
-    Validator,
-};
+use validate::validator::{Validator};
 
 pub struct Field<'a> {
     pub value: Option<String>,
@@ -13,6 +11,10 @@ impl<'a> Field<'a> {
 
     pub fn new() -> Field<'a> {
         Field{value: None, validators: vec!(), required: false}
+    }
+
+    pub fn with_validator(v: Box<Validator + 'a>) -> Field<'a> {
+        Field{value: None, validators: vec!(v), required: false}
     }
 
     pub fn with_validators(v: Vec<Box<Validator + 'a>>,) -> Field<'a> {
@@ -42,7 +44,7 @@ impl<'a> Field<'a> {
 
 #[cfg(test)]
 mod test {
-    use validator::{Validator, Integer, Range};
+    use validate::validator::{Validator, Integer, Range};
     use super::{Field};
 
     #[test]

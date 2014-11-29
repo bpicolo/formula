@@ -11,7 +11,7 @@ pub struct HtmlForm<'a> {
 
 
 impl<'a> HtmlForm<'a> {
-    fn new() -> HtmlForm<'a> {
+    pub fn new() -> HtmlForm<'a> {
         HtmlForm{inputs: HashMap::new(), _has_errors: false, _validated: false}
     }
 }
@@ -40,10 +40,10 @@ impl<'a> Form for HtmlForm<'a> {
 #[cfg(test)]
 mod test {
 
-    use field::Field;
+    use validate::field::Field;
     use input::Input;
     use super::{Form, HtmlForm};
-    use validator::{Validator, Integer, Range, Length};
+    use validate::validator::{Validator, Integer, Range, Length};
 
     #[test]
     fn test_a_form() {

@@ -1,9 +1,6 @@
 /*
     String validators
 */
-use std::string::String;
-
-
 pub struct Integer<'a>;
 pub struct Float<'a>;
 pub struct Range<'a> {
@@ -14,7 +11,9 @@ pub struct Length<'a> {
     pub min: Option<uint>,
     pub max: Option<uint>
 }
-
+pub struct Regex<'a> {
+    pub re: String,
+}
 
 pub trait Validator {
     fn validate(&self, s: &String) -> bool;
@@ -25,6 +24,13 @@ impl<'a> Validator for Integer<'a> {
     fn validate(&self, s: &String) -> bool {
         let val: Option<int> = from_str(s.as_slice());
         return val.is_some();
+    }
+}
+
+
+impl<'a> Integer<'a> {
+    pub fn foo(self) -> Box<Validator + 'a> {
+        box self as Box<Validator>
     }
 }
 
@@ -44,6 +50,12 @@ impl<'a> Validator for Range<'a> {
             (self.max.is_none() || self.max >= val);
     }
 }
+
+
+// impl<'a> Validator for Regex<'a> {
+//     fn validate(&self, s: &String) -> bool {
+//     }
+// }
 
 
 impl<'a> Validator for Length<'a> {

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use field::Field;
+use validate::field::Field;
 use html::{Html, render_html};
 
 pub struct Input<'a> {
@@ -9,7 +9,7 @@ pub struct Input<'a> {
 }
 
 impl<'a> Input<'a> {
-    fn new() -> Input<'a> {
+    pub fn new() -> Input<'a> {
         Input{attributes: HashMap::new(), field: Field::new()}
     }
 
@@ -45,11 +45,15 @@ impl<'a> Html for Input<'a> {
 
 #[cfg(test)]
 mod test {
-    use field::Field;
-    use html::{Html, render_html};
+    use validate::field::Field;
     use std::collections::HashMap;
     use super::Input;
-    use validator::{Validator, Integer, Range};
+
+    #[test]
+    fn test_new_input() {
+        let input = Input::new();
+        assert!(input.attributes.len() == 0)
+    }
 
     #[test]
     fn test_empty_field() {
